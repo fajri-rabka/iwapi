@@ -103,10 +103,11 @@
                   </a>
                 </h5>
                 <div class="table text-nowrap">
-                  <table class="table">
+                  <table class="table" id="dtb1">
                     <thead>
                       <tr>
                         <th>No</th>
+                        <th>Gambar</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Harga Satuan</th>
@@ -121,6 +122,7 @@
                           echo'
                             <tr>
                               <td>'.$no++.'</td>
+                              <td><img class="card-img card-img-left w-50" src="'.$row['gambar'].'" alt="Card image" /></td>
                               <td>#'.$row['kode_brng'].'</td>
                               <td>'.$row['nm_brng'].'</td>
                               <td>Rp. '.number_format($row['harga']).'</td>
@@ -194,8 +196,12 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/vendor/js/datatables-bt5.js"></script>
+    <script src="../assets/vendor/js/datatable-btnprint.js"></script>
+    <script src="../assets/vendor/js/datatable-btnprint2.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="../assets/vendor/js/menu.js"></script>
@@ -217,6 +223,10 @@
           var id_hapus = $(this).data('id_hapus');
           $(".id_hapus").val(id_hapus);
       });
+
+      $(document).ready(function() {
+        $('#dtb1').DataTable();
+    } );
     </script>
 
   </body>

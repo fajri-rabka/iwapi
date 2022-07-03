@@ -6,7 +6,7 @@
 	if(isset($_GET['admin'])){
 		header('Location:login-admin.php');
 	}else{
-		header('Location:login.php');
+		header('Location:index.php');
 	}
 	
     ob_flush();

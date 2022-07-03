@@ -8,7 +8,8 @@
     $password = md5($_POST['password']);
     
     // menyeleksi data admin dengan email dan password yang sesuai
-    $data = mysqli_query($conn, "select * from tbl_user where email='$email' and password='$password' and level = '1' and is_delete < 1 ");
+    $data = mysqli_query($conn, "select * from tbl_user where email='$email' and password='$password' and level = '2' and is_delete < 1 ");
+    $row = mysqli_fetch_array($data);
     
     // menghitung jumlah data yang ditemukan
     $cek = mysqli_num_rows($data);
@@ -18,9 +19,9 @@
       $_SESSION['nm_user'] = $row['nm_user'];
       $_SESSION['email'] = $email;
       $_SESSION['status'] = "login";
-      header("location:dashboard.php?log");
+      header("location:homepage.php");
     }else{
-      header("location:login-admin.php?pesan=gagal");
+      header("location:index.php?pesan=gagal");
     }
   }
 ?>
@@ -77,6 +78,8 @@
           <!-- Register -->
           <div class="card">
             <div class="card-body">
+              <h4 class="mb-2">Selamat datang di IWAPI</h4>
+              <p class="mb-4">Silahkan masukan email dan password kamu</p>
 
               <form id="formAuthentication" class="mb-3" action="" method="POST">
                 <div class="mb-3">
@@ -110,6 +113,12 @@
                 </div>
               </form>
 
+              <p class="text-center">
+                <span>Tidak punya akun?</span>
+                <a href="register.php">
+                  <span>Daftar akun anda</span>
+                </a>
+              </p>
             </div>
           </div>
           <!-- /Register -->

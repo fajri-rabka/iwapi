@@ -35,7 +35,7 @@
             $valid = 0;
         }
 
-        header("location:login.php");
+        header("location:index.php");
     }
   }
 
@@ -141,7 +141,7 @@
 
               <p class="text-center">
                 <span>Sudah punya akun?</span>
-                <a href="login.php">
+                <a href="index.php">
                   <span>Masuk akun anda</span>
                 </a>
               </p>

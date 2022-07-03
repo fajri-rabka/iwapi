@@ -2,7 +2,7 @@
   session_start();
   include "../libs/koneksi.php";
 
-  if(!isset($_SESSION['email'])) { header('Location:login.php');  }
+  if(!isset($_SESSION['email'])) { header('Location:index.php');  }
 
   if(isset($_GET['pesan'])){
     $id_brng = $_GET['id_brng'];
@@ -141,7 +141,7 @@
                                     <h6 class="mb-1 text-muted">Jumlah</h6>
                                     <div class="input-group input-group-merge">
                                       <span class="input-group-text"></span>
-                                      <input type="number" class="form-control" placeholder="20" value="" id="pcs'.$row['id'].'" aria-label="Amount (to the nearest dollar)" />
+                                      <input type="number" class="form-control" placeholder="20" min="20" value="1" id="pcs'.$row['id'].'" aria-label="Amount (to the nearest dollar)" />
                                       <span class="input-group-text">Pcs</span>
                                     </div>
                                   </div>
