@@ -1,3 +1,46 @@
+<?php
+  include "../libs/koneksi.php";
+  
+  if(isset($_POST['nm_user'])){
+    $nm_user = $_POST['nm_user'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $level = 2;
+
+      // Insert
+      $select_user = " SELECT * FROM tbl_user WHERE email = '".$email."' and is_delete < 1 ";
+      $query_user = mysqli_query($conn, $select_user);
+      $jum_user = mysqli_num_rows($query_user);
+
+      if($jum_user > 0){
+        $valid = 2;
+        header("location:register.php");
+      }else{
+        $password = md5($password);
+        $insert = "
+            INSERT INTO tbl_user(
+                nm_user,
+                email,
+                password,
+                level
+            ) VALUES(
+                '".$nm_user."',
+                '".$email."',
+                '".$password."',
+                '".$level."'
+            )
+        ";
+        $query = mysqli_query($conn,$insert);
+        if(!$query){
+            $valid = 0;
+        }
+
+        header("location:login.php");
+    }
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -53,21 +96,21 @@
               <h4 class="mb-2">Selamat datang di IWAPI</h4>
               <p class="mb-4">Silahkan daftarkan akun kamu di IWAPI</p>
 
-              <form id="formAuthentication" class="mb-3" action="index.php" method="POST">
+              <form id="formAuthentication" class="mb-3" action="" method="POST">
                 <div class="mb-3">
-                  <label for="text" class="form-label">Username</label>
-                  <input
+                  <label for="text" class="form-label">Nama User</label>
+                  <input required
                     type="text"
                     class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Masukan username kamu disini"
+                    id="nm_user"
+                    name="nm_user"
+                    placeholder="Masukan nama kamu disini"
                     autofocus
                   />
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email </label>
-                  <input
+                  <input required
                     type="text"
                     class="form-control"
                     id="email"
@@ -81,7 +124,7 @@
                     <label class="form-label" for="password">Password</label>
                   </div>
                   <div class="input-group input-group-merge">
-                    <input
+                    <input required
                       type="password"
                       id="password"
                       class="form-control"

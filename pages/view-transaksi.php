@@ -1,3 +1,32 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+
+  if(!isset($_SESSION['email'])) { header('Location:login-admin.php');  }
+  
+  if(isset($_GET['setuju'])){
+    $setuju = " UPDATE tbl_transaksi SET sts = 'DISETUJUI' WHERE no_order = '".$_GET['id_hapus']."' ";
+    $query = mysqli_query($conn,$setuju);
+
+    header("location:master-transaksi.php?setuju");
+  }
+  if(isset($_GET['tolak'])){
+    $tolak = " UPDATE tbl_transaksi SET sts = 'DITOLAK' WHERE no_order = '".$_GET['id_hapus']."' ";
+    $query = mysqli_query($conn,$tolak);
+
+    header("location:master-transaksi.php?tolak");
+  }
+
+  $show = '';
+  $text = '';
+
+  $no_order = '';
+  if(isset($_GET['no_order'])){
+    $no_order = $_GET['no_order'];
+  }
+  
+?>
+
 <!DOCTYPE html>
 
 <html
@@ -68,75 +97,76 @@
               <!-- Basic Bootstrap Table -->
               <div class="card">
                 <div class="card-body cart-container">
-                    <h6 class="text-muted">Nomor Order #56789121</h6>
+                    <h6 class="text-muted">Nomor Order #<?= $no_order ?></h6>
+
+                    <?php 
+                      $total=0;
+                      $query = mysqli_query($conn, "SELECT k.*, b.gambar, b.nm_brng FROM tbl_keranjang k join tbl_barang b on b.id = k.id_brng where k.is_delete < 1 and k.no_order = '".$no_order."' order by k.id asc");
+                      while($row = mysqli_fetch_array($query)){
+                        $gambar = $row['gambar'];
+                        if($gambar == ''){
+                          $gambar = '../assets/img/barang/A_black_image.jpg';
+                        }
+                        $harga = $row['harga'] * $row['pcs'];
+                        $total += $harga;
+                        
+                        echo'
+                          <ul class="p-0 m-0 cart-body">
+                            <li class="d-flex mb-4 pb-1">
+                              <div class="avatar flex-shrink-0 me-3">
+                                  <img class="card-img card-img-left" src="'.$gambar.'" alt="Card image" />
+                              </div>
+                              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="me-2">
+                                  <small class="text-muted d-block mb-1">'.$row['nm_brng'].'</small>
+                                  <h6 class="mb-1">'.number_format($row['pcs']).' pcs</h6>
+                                </div>
+                                <div class="user-progress d-flex align-items-center gap-1">
+                                  <h6 class="mb-0">Rp. '.number_format($harga).'</h6>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        ';
+                      }
+                    ?>
+
                     <ul class="p-0 m-0 cart-body">
                       <li class="d-flex mb-4 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <img class="card-img card-img-left" src="../assets/img/elements/library.jpg" alt="Card image" />
-                        </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                           <div class="me-2">
-                            <small class="text-muted d-block mb-1">Buku</small>
-                            <h6 class="mb-1">1000 pcs</h6>
+                            <small class="text-muted d-block mb-1">Total</small>
+                            <h6 class="mb-1">Jumlah Harga</h6>
                           </div>
                           <div class="user-progress d-flex align-items-center gap-1">
-                            <h6 class="mb-0">Rp. 5.000.000</h6>
+                            <h6 class="mb-0">Rp. <?= number_format($total) ?></h6>
                           </div>
                         </div>
                       </li>
                     </ul>
-                    <ul class="p-0 m-0 cart-body">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                              <img class="card-img card-img-left" src="../assets/img/elements/library.jpg" alt="Card image" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Pensil</small>
-                              <h6 class="mb-1">300 pcs</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">Rp. 3.000.000</h6>
-                            </div>
-                          </div>
-                        </li>
-                    </ul>
-                    <ul class="p-0 m-0 cart-body">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Total</small>
-                              <h6 class="mb-1">Jumlah Harga</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">Rp. 8.000.000</h6>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary mt-3 me-3"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalCenter"
-                            >
-                                <span class="tf-icons bx bx-hand"></span>
-                                Setujui Permintaan
-                            </a>
-                            <a href="#" class="btn btn-outline-primary mt-3 me-3"
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalCenter"
-                            >
-                                <span class="tf-icons bx bx-hand"></span>
-                                Tolak Permintaan
-                            </a>
-                            <a class="ml-3 mt-3 " href="master-transaksi.php">
-                                <u>
-                                    Kembali ke transaksi
-                                </u>
-                            </a>
-                        </div>
+                    <div class="d-flex align-items-center">
+                        <a href="#" class="btn btn-primary mt-3 me-3 setuju_button" type="button" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modalSetuju" 
+                          data-id_hapus="<?php echo $no_order ?>"
+                        >
+                          <span class="tf-icons bx bx-hand"></span>
+                          Setujui Permintaan
+                        </a>
+                        <a href="#" class="btn btn-outline-primary mt-3 me-3 tolak_button" type="button" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modalTolak" 
+                          data-id_hapus="<?php echo $no_order ?>"
+                        >
+                          <span class="tf-icons bx bx-hand"></span>
+                          Tolak Permintaan
+                        </a>
+                        <a class="ml-3 mt-3 " href="master-transaksi.php">
+                          <u>
+                              Kembali ke transaksi
+                          </u>
+                        </a>
+                    </div>
                 </div>
               </div>
               <!--/ Basic Bootstrap Table -->
@@ -177,5 +207,18 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Script -->
+    <script type="text/javascript">
+      $(document).on( "click", '.tolak_button',function(e) {
+          var id_hapus = $(this).data('id_hapus');
+          $(".id_hapus").val(id_hapus);
+      });
+      $(document).on( "click", '.setuju_button',function(e) {
+          var id_hapus = $(this).data('id_hapus');
+          $(".id_hapus").val(id_hapus);
+      });
+    </script>
+
   </body>
 </html>

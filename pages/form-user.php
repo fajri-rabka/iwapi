@@ -1,3 +1,98 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+  
+  if(!isset($_SESSION['email'])) { header('Location:login-admin.php');  }
+
+  $show = '';
+  $text = '';
+  if(isset($_POST['finish'])){
+    $is_pass='';
+    $nm_user = $_POST['nm_user'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $level = $_POST['level'];
+    $id_user = $_POST['id_user'];
+
+    if($id_user < 1){
+      // Insert
+      $select_user = " SELECT * FROM tbl_user WHERE email = '".$email."' and is_delete < 1 ";
+      $query_user = mysqli_query($conn, $select_user);
+      $jum_user = mysqli_num_rows($query_user);
+
+      if($jum_user > 0){
+        $valid = 2;
+        header("location:form-user.php");
+      }else{
+        $password = md5($password);
+        $insert = "
+            INSERT INTO tbl_user(
+                nm_user,
+                email,
+                password,
+                level
+            ) VALUES(
+                '".$nm_user."',
+                '".$email."',
+                '".$password."',
+                '".$level."'
+            )
+        ";
+        $query = mysqli_query($conn,$insert);
+        if(!$query){
+            $valid = 0;
+        }
+
+        header("location:master-user.php?add");
+      }
+
+    }else{
+      // Update
+      $select_user = " SELECT * FROM tbl_user WHERE email = '".$email."' and id <> '".$id_user."' and is_delete < 1 ";
+      $query_user = mysqli_query($conn, $select_user);
+      $jum_user = mysqli_num_rows($query_user);
+
+      if($jum_user > 0){
+        $valid = 2;
+        header("location:form-user.php?id=".$id_user);
+      }else{
+        if($password != ''){
+          $is_pass = "password = '".md5($password)."',";
+        }
+        $update = " UPDATE tbl_user SET 
+                                      nm_user = '".$nm_user."',
+                                      email = '".$email."',
+                                      ".$is_pass."
+                                      level = '".$level."' 
+                                    WHERE id = '".$id_user."' ";
+    
+        $query = mysqli_query($conn,$update);
+        if(!$query){
+            $valid = 0;
+        }
+
+        header("location:master-user.php?update");
+      }
+    }
+
+  }
+
+  $id = 0;
+  $nm_user = '';
+  $email = '';
+  $password = '';
+  $level = '';
+  if(isset($_GET['id'])){
+    $query = mysqli_query($conn, "SELECT * FROM tbl_user where id = '".$_GET['id']."' and is_delete < 1 order by id asc");
+    while($row = mysqli_fetch_array($query)){
+      $id = $row['id'];
+      $nm_user = $row['nm_user'];
+      $email = $row['email'];
+      $password = $row['password'];
+      $level = $row['level'];
+    }
+  }
+?>
 
 <html
   lang="en"
@@ -69,38 +164,34 @@
               <div class="col-xl">
                 <div class="card mb-4">
                   <div class="card-body">
-                    <form>
+                    <form action="" method="POST">
+                      <input type="hidden" value="<?= $id ?>" name="id_user">
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Nama User</label>
-                        <input type="text" class="form-control" id="basic-default-fullname" placeholder="Nama user"/>
-                    </div>
-                    <div class="mb-3">
+                        <input type="text" value="<?= $nm_user ?>" name="nm_user" required class="form-control" id="basic-default-fullname" placeholder="Nama user"/>
+                      </div>
+                      <div class="mb-3">
                           <label class="form-label" for="basic-default-fullname">Email</label>
                         <div class="input-group input-group-merge">
-                            <input
-                              type="text"
-                              id="email"
-                              class="form-control"
-                              placeholder="Email"
-                            />
+                            <input type="text" value="<?= $email ?>" name="email" required id="email" class="form-control" placeholder="Email"/>
                             <span class="input-group-text" id="email">@example.com</span>
                           </div>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Password</label>
-                        <input type="password" class="form-control" id="basic-default-fullname" placeholder="Password" />
+                        <input type="password" name="password" <?php if($id < 1){echo'required';} ?> class="form-control" id="basic-default-fullname" placeholder="Password" />
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Level</label>
                         <div class="input-group">
-                            <select class="form-select" id="inputGroupSelect01">
-                              <option selected>Pilih level</option>
-                              <option value="1">Admin</option>
-                              <option value="2">User</option>
+                            <select class="form-select" name="level" required id="inputGroupSelect01">
+                              <option value="">Pilih level</option>
+                              <option value="1" <?php if($level == 1){echo'selected';} ?> >Admin</option>
+                              <option value="2" <?php if($level == 2){echo'selected';} ?> >User</option>
                             </select>
                           </div>
                       </div>
-                      <button type="submit" class="btn btn-primary">Simpan</button>
+                      <button type="submit" name="finish" class="btn btn-primary">Simpan</button>
                       <a href="master-user.php" class="btn btn-outline-primary me-3">Batal</a>
                     </form>
                   </div>

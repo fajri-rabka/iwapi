@@ -1,3 +1,31 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+  
+  if(isset($_POST['email'])){
+    // menangkap data yang dikirim dari form
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    
+    // menyeleksi data admin dengan email dan password yang sesuai
+    $data = mysqli_query($conn, "select * from tbl_user where email='$email' and password='$password' and level = '2' and is_delete < 1 ");
+    $row = mysqli_fetch_array($data);
+    
+    // menghitung jumlah data yang ditemukan
+    $cek = mysqli_num_rows($data);
+    
+    if($cek > 0){
+      $_SESSION['id_user'] = $row['id'];
+      $_SESSION['nm_user'] = $row['nm_user'];
+      $_SESSION['email'] = $email;
+      $_SESSION['status'] = "login";
+      header("location:homepage.php");
+    }else{
+      header("location:login.php?pesan=gagal");
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -53,15 +81,15 @@
               <h4 class="mb-2">Selamat datang di IWAPI</h4>
               <p class="mb-4">Silahkan masukan email dan password kamu</p>
 
-              <form id="formAuthentication" class="mb-3" action="index.php" method="POST">
+              <form id="formAuthentication" class="mb-3" action="" method="POST">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email atau Username</label>
+                  <label for="email" class="form-label">Email</label>
                   <input
                     type="text"
                     class="form-control"
                     id="email"
-                    name="email-username"
-                    placeholder="Masukan email atau username kamu disini"
+                    name="email"
+                    placeholder="Masukan email kamu disini"
                     autofocus
                   />
                 </div>

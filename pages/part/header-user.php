@@ -1,20 +1,14 @@
   <!-- Navbar -->
 
-  <nav
-            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
+  <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar" >
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
               <!-- Search -->
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Cari Barang Disini..."
-                    aria-label="Search..."
-                  />
+                  <form action="daftar-barang.php" method="GET">
+                    <input type="text" class="form-control border-0 shadow-none" name="search_brng" placeholder="Cari Barang Disini..." aria-label="Search..." />
+                  </form>
                 </div>
               </div>
               <!-- /Search -->
@@ -38,8 +32,8 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">Kholil</span>
-                            <small class="text-muted">Admin</small>
+                            <span class="fw-semibold d-block"><?= $_SESSION['nm_user'] ?></span>
+                            <small class="text-muted">User</small>
                           </div>
                         </div>
                       </a>
@@ -48,11 +42,26 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
+                      <a class="dropdown-item" href="homepage.php">
+                        <span class="d-flex align-items-center align-middle">
+                          <i class="flex-shrink-0 bx bx-home me-2"></i>
+                          <span class="flex-grow-1 align-middle">Beranda</span>
+                          <!-- <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span> -->
+                        </span>
+                      </a>
+                    </li>
+                    <li>
                       <a class="dropdown-item" href="keranjang.php">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 bx bx-cart-alt me-2"></i>
                           <span class="flex-grow-1 align-middle">Keranjang</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
+                            <?php
+                              $query_keranjang = mysqli_query($conn, "SELECT * FROM tbl_keranjang where is_delete < 1 and id_user = '".$_SESSION['id_user']."' and no_order = '' order by id asc");
+                              $num_keranjang = mysqli_num_rows($query_keranjang);
+                              echo $num_keranjang;
+                            ?>
+                          </span>
                         </span>
                       </a>
                     </li>
@@ -61,7 +70,13 @@
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                           <span class="flex-grow-1 align-middle">Transaksi</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">2</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
+                            <?php
+                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1 order by id asc");
+                              $num_transaksi = mysqli_num_rows($query_transaksi);
+                              echo $num_transaksi;
+                            ?>
+                          </span>
                         </span>
                       </a>
                     </li>

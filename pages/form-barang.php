@@ -1,3 +1,101 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+
+  if(!isset($_SESSION['email'])) { header('Location:login-admin.php');  }
+
+  $show = '';
+  $text = '';
+  if(isset($_POST['finish'])){
+    $id_brng = $_POST['id_brng'];
+    $kode_brng = $_POST['kode_brng'];
+    $nm_brng = $_POST['nm_brng'];
+    $jenis_brng = $_POST['jenis_brng'];
+    $harga = $_POST['harga'];
+
+    $gambar = $_FILES['gambar']['name'];
+    $ukuran = $_FILES['gambar']['size'];
+    $file_tmp = $_FILES['gambar']['tmp_name']; 
+
+    $is_gambar = '';
+    if($gambar!="") {
+        move_uploaded_file($file_tmp, '../assets/img/barang/'.$gambar);
+        $path="../assets/img/barang/".$gambar;
+
+        $is_gambar = " gambar = '".$path."', ";
+    }else{
+        $path="";
+    }
+
+    if($id_brng < 1){
+      // Insert
+      $select_brng = " SELECT * FROM tbl_barang WHERE kode_brng = '".$kode_brng."' and is_delete < 1 ";
+      $query_brng = mysqli_query($conn, $select_brng);
+      $jum_brng = mysqli_num_rows($query_brng);
+
+      if($jum_brng > 0){
+        $valid = 2;
+        header("location:form-barang.php");
+      }else{
+        $insert = "
+            INSERT INTO tbl_barang(
+                kode_brng,
+                nm_brng,
+                jenis_brng,
+                harga,
+                gambar
+            ) VALUES(
+                '".$kode_brng."',
+                '".$nm_brng."',
+                '".$jenis_brng."',
+                '".$harga."',
+                '".$path."'
+            )
+        ";
+        $query = mysqli_query($conn,$insert);
+        if(!$query){
+            $valid = 0;
+        }
+
+        header("location:master-barang.php?add");
+      }
+
+    }else{
+      // Update
+        $update = " UPDATE tbl_barang SET 
+                                      kode_brng = '".$kode_brng."',
+                                      nm_brng = '".$nm_brng."',
+                                      jenis_brng = '".$jenis_brng."',
+                                      ".$is_gambar."
+                                      harga = '".$harga."' 
+                                    WHERE id = '".$id_brng."' ";
+    
+        $query = mysqli_query($conn,$update);
+        if(!$query){
+            $valid = 0;
+        }
+
+        header("location:master-barang.php?update");
+    }
+
+  }
+
+  $id = 0;
+  $kode_brng = rand();
+  $nm_brng = '';
+  $jenis_brng = '';
+  $harga = '';
+  if(isset($_GET['id'])){
+    $query = mysqli_query($conn, "SELECT * FROM tbl_barang where id = '".$_GET['id']."' and is_delete < 1 order by id asc");
+    while($row = mysqli_fetch_array($query)){
+      $id = $row['id'];
+      $kode_brng = $row['kode_brng'];
+      $nm_brng = $row['nm_brng'];
+      $jenis_brng = $row['jenis_brng'];
+      $harga = round($row['harga']);
+    }
+  }
+?>
 
 <html
   lang="en"
@@ -69,24 +167,29 @@
               <div class="col-xl">
                 <div class="card mb-4">
                   <div class="card-body">
-                    <form>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                      <input type="hidden" name="id_brng" value="<?= $id ?>">
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Kode Barang</label>
-                        <input type="text" class="form-control" id="basic-default-fullname" placeholder="Kode barang" readonly/>
+                        <input type="text" name="kode_brng" value="<?= $kode_brng ?>" class="form-control" id="basic-default-fullname" placeholder="Kode barang" readonly/>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Nama Barang</label>
-                        <input type="text" class="form-control" id="basic-default-fullname" placeholder="Nama barang" />
+                        <input type="text" name="nm_brng" value="<?= $nm_brng ?>" class="form-control" id="basic-default-fullname" placeholder="Nama barang" required/>
                       </div>
                       <div class="mb-3">
                         <label class="form-label" for="basic-default-fullname">Jenis Barang</label>
-                        <input type="number" class="form-control" id="basic-default-fullname" placeholder="Jenis barang" />
+                        <input type="text" name="jenis_brng" value="<?= $jenis_brng ?>" class="form-control" id="basic-default-fullname" placeholder="Jenis barang" />
                       </div>
                       <div class="mb-3">
-                        <label class="form-label" for="basic-default-fullname">Stok Barang</label>
-                        <input type="number" class="form-control" id="basic-default-fullname" placeholder="Stok barang" />
+                        <label class="form-label" for="basic-default-fullname">Harga Barang</label>
+                        <input type="number" name="harga" value="<?= $harga ?>" class="form-control" id="basic-default-fullname" placeholder="Harga barang" />
                       </div>
-                      <button type="submit" class="btn btn-primary">Simpan</button>
+                      <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Gambar</label>
+                        <input type="file" name="gambar" class="form-control" id="basic-default-fullname"  />
+                      </div>
+                      <button type="submit" name="finish" class="btn btn-primary">Simpan</button>
                       <a href="master-barang.php" class="btn btn-outline-primary me-3">Batal</a>
                     </form>
                   </div>

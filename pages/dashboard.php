@@ -1,3 +1,17 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+
+  if(!isset($_SESSION['email'])) { header('Location:login-admin.php');  }
+
+  $show = '';
+  $text = '';
+  if(isset($_GET['log'])){
+    $show = 'show';
+    $text = 'Anda berhasil login';
+  }
+?>
+
 <!DOCTYPE html>
 
 <html
@@ -94,7 +108,13 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">Transaksi</span>
-                          <h3 class="card-title mb-2">200</h3>
+                          <h3 class="card-title mb-2">
+                            <?php
+                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1 order by id asc");
+                              $num_transaksi = mysqli_num_rows($query_transaksi);
+                              echo $num_transaksi;
+                            ?>
+                          </h3>
                         </div>
                       </div>
                     </div>
@@ -126,7 +146,13 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">Barang</span>
-                          <h3 class="card-title mb-2">50</h3>
+                          <h3 class="card-title mb-2">
+                            <?php
+                              $query_barang = mysqli_query($conn, "SELECT * FROM tbl_barang where is_delete < 1 order by id asc");
+                              $num_barang = mysqli_num_rows($query_barang);
+                              echo $num_barang;
+                            ?>
+                          </h3>
                         </div>
                       </div>
                     </div>
@@ -158,7 +184,13 @@
                             </div>
                           </div>
                           <span class="fw-semibold d-block mb-1">User</span>
-                          <h3 class="card-title mb-2">8</h3>
+                          <h3 class="card-title mb-2">
+                            <?php
+                              $query = mysqli_query($conn, "SELECT * FROM tbl_user where is_delete < 1 order by id asc");
+                              $num_user = mysqli_num_rows($query);
+                              echo $num_user;
+                            ?>
+                          </h3>
                         </div>
                       </div>
                     </div>

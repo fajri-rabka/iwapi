@@ -1,3 +1,32 @@
+<?php
+  session_start();
+  include "../libs/koneksi.php";
+
+  if(!isset($_SESSION['email'])) { header('Location:login-admin.php');  }
+
+  if(isset($_GET['delete'])){
+    $delete = " UPDATE tbl_user SET is_delete = '1' WHERE id = '".$_GET['id_hapus']."' ";
+    $query = mysqli_query($conn,$delete);
+
+    header("location:master-user.php?del");
+  }
+
+  $show = '';
+  $text = '';
+  if(isset($_GET['add'])){
+    $show = 'show';
+    $text = 'Permintaan berhasil ditambahkan';
+  }
+  if(isset($_GET['update'])){
+    $show = 'show';
+    $text = 'Permintaan berhasil diubah';
+  }
+  if(isset($_GET['del'])){
+    $show = 'show';
+    $text = 'Permintaan berhasil dihapus';
+  }
+
+?>
 <!DOCTYPE html>
 
 <html
@@ -85,38 +114,53 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td>1</td>
-                        <td>Brilian</td>
-                        <td>
-                          brilia@gmail.com
-                        </td>
-                        <td><span class="badge bg-label-warning me-1">User</span></td>
-                        <td>
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="form-user.php"
-                              ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                            >
-                            <a class="dropdown-item" href="javascript:void(0);"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalCenter"
-                              ><i class="bx bx-trash me-1"></i> Hapus</a
-                            >
-                          </div>
-                    </td>
-                      </tr>
+                      <?php
+                        $no=1;
+                        $query = mysqli_query($conn, "SELECT * FROM tbl_user where is_delete < 1 order by id asc");
+                        while($row = mysqli_fetch_array($query)){
+                          if($row['level'] == 1){
+                            $level = 'Admin';
+                            $bgColor='bg-label-success';
+                          }else{
+                            $level = 'User';
+                            $bgColor='bg-label-warning';
+                          }
+
+                          echo'
+                            <tr>
+                              <td>'.$no++.'</td>
+                              <td>'.$row['nm_user'].'</td>
+                              <td>'.$row['email'].'</td>
+                              <td>
+                                <span class="badge '.$bgColor.' me-1">'.$level.'</span>
+                              </td>
+                              <td>
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="form-user.php?id='.$row['id'].'"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                  <a class="dropdown-item hapus_button" href="javascript:void(0);" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#modalCenter"
+                                    data-id_hapus="'.$row['id'].'"
+                                  ><i class="bx bx-trash me-1"></i> Hapus</a>
+                                </div>
+                              </td>
+                            </tr>
+
+                          ';
+                        }
+                      ?>
                     </tbody>
                   </table>
                 </div>
               </div>
               <!--/ Basic Bootstrap Table -->
+              <?php include "part/footer-admin.php"; ?>
             </div>
             <!-- / Content -->
 
-            <?php include "part/footer-admin.php"; ?>
 
             <div class="content-backdrop fade"></div>
           </div>
@@ -129,21 +173,22 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modalCenterTitle">Peringatan!</h5>
-                </div>
-            <div class="modal-body">
-                <p>Apakah anda yakin, menghapus data ini?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary">
-                  Ya, saya yakin
-                </button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Batalkan</button>
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCenterTitle">Peringatan!</h5>
               </div>
+              <form action="" method="GET">
+                <div class="modal-body">
+                    <input type="hidden" class="form-control id_hapus" name="id_hapus">
+                    <p>Apakah anda yakin, menghapus data ini?</p>
+                </div>
+                <div class="modal-footer">
+                  <input type="submit" class="btn btn-outline-secondary" name="delete" value="Ya, saya yakin">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Batalkan</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
       </div>
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
@@ -170,5 +215,14 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Script -->
+    <script type="text/javascript">
+      $(document).on( "click", '.hapus_button',function(e) {
+          var id_hapus = $(this).data('id_hapus');
+          $(".id_hapus").val(id_hapus);
+      });
+    </script>
+
   </body>
 </html>
