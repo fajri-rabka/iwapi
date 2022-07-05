@@ -9,6 +9,7 @@
     
     // menyeleksi data admin dengan email dan password yang sesuai
     $data = mysqli_query($conn, "select * from tbl_user where email='$email' and password='$password' and level = '1' and is_delete < 1 ");
+    $row = mysqli_fetch_array($data);
     
     // menghitung jumlah data yang ditemukan
     $cek = mysqli_num_rows($data);
