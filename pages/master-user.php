@@ -44,7 +44,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -103,12 +103,13 @@
                   </a>
                 </h5>
                 <div class="table text-nowrap">
-                  <table class="table">
+                  <table class="table" id="dtb1">
                     <thead>
                       <tr>
                         <th>No</th>
                         <th>Nama User</th>
                         <th>Email</th>
+                        <th>Alamat</th>
                         <th>Level</th>
                         <th>Aksi</th>
                       </tr>
@@ -126,11 +127,18 @@
                             $bgColor='bg-label-warning';
                           }
 
+                          if($row['alamat'] == ""){
+                            $isi = '-';
+                          }else{
+                            $isi = $row['alamat'];
+                          }
+
                           echo'
                             <tr>
                               <td>'.$no++.'</td>
                               <td>'.$row['nm_user'].'</td>
                               <td>'.$row['email'].'</td>
+                              <td>'.$isi.'</td>
                               <td>
                                 <span class="badge '.$bgColor.' me-1">'.$level.'</span>
                               </td>
@@ -199,8 +207,12 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/vendor/js/datatables-bt5.js"></script>
+    <script src="../assets/vendor/js/datatable-btnprint.js"></script>
+    <script src="../assets/vendor/js/datatable-btnprint2.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="../assets/vendor/js/menu.js"></script>
@@ -222,6 +234,10 @@
           var id_hapus = $(this).data('id_hapus');
           $(".id_hapus").val(id_hapus);
       });
+
+      $(document).ready(function() {
+        $('#dtb1').DataTable();
+    } );
     </script>
 
   </body>

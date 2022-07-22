@@ -44,7 +44,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -78,6 +78,14 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+
+    <style>
+      @media print{
+        .hide-print{
+          display: none !important
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -97,7 +105,12 @@
               <!-- Basic Bootstrap Table -->
               <div class="card">
                 <div class="card-body cart-container">
-                    <h6 class="text-muted">Nomor Order #<?= $no_order ?></h6>
+                    <h6 class="text-muted">
+                      Nomor Order #<?= $no_order ?>
+                      <a href="javascript:void" onclick="window.print();" class="btn btn-primary ml-2 hide-print">
+                        <span class="tf-icons bx bx-printer"></span>
+                      </a>
+                    </h6>
 
                     <?php 
                       $total=0;
@@ -144,7 +157,7 @@
                         </div>
                       </li>
                     </ul>
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center hide-print">
                         <a href="#" class="btn btn-primary mt-3 me-3 setuju_button" type="button" 
                           data-bs-toggle="modal" 
                           data-bs-target="#modalSetuju" 

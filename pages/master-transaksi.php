@@ -43,7 +43,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -77,6 +77,16 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+
+    <style>
+      @media print{
+        .hide-print{
+          display: none !important
+        }
+      }
+    </style>
+
+    
   </head>
 
   <body>
@@ -95,16 +105,18 @@
 
               <!-- Basic Bootstrap Table -->
               <div class="card">
-                <h5 class="card-header">Master Transaksi</h5>
+                <h5 class="card-header">
+                  Master Transaksi
+                </h5>
                 <div class="table text-nowrap">
-                  <table class="table">
+                  <table class="table" id="dtb1">
                     <thead>
                       <tr>
                         <th>No</th>
                         <th>No Order</th>
                         <th>Nama Pemesan</th>
                         <th>Status</th>
-                        <th>Aksi</th>
+                        <th class="hide-print">Aksi</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -137,7 +149,7 @@
                               </td>
                               <td> '.$row['nm_user'].' </td>
                               <td><span class="badge '.$bgColor.' me-1">'.$sts.'</span></td>
-                              <td>
+                              <td class="hide-print">
                                 <a href="javascript:void(0);" class="hapus_button"
                                   data-bs-toggle="modal"
                                   data-bs-target="#modalCenter"
@@ -197,12 +209,22 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/vendor/js/datatables-bt5.js"></script>
+    <script src="../assets/vendor/js/datatables-btn.js"></script>
+    <script src="../assets/vendor/js/datatables-btnprint.js"></script>
+    <script src="../assets/vendor/js/datatables-btnprint2.js"></script>
+    <script src="../assets/vendor/js/datatables-btnhtml5.js"></script>
+    <script src="../assets/vendor/js/datatables-colvis.js"></script>
+    <script src="../assets/vendor/js/pdf1.js"></script>
+    <script src="../assets/vendor/js/pdf2.js"></script>
+    <script src="../assets/vendor/js/jszip.js"></script>
     <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="../assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
+    <!-- endbuild --> 
 
     <!-- Vendors JS -->
 
@@ -220,6 +242,26 @@
           var id_hapus = $(this).data('id_hapus');
           $(".id_hapus").val(id_hapus);
       });
+
+      $(document).ready(function() {
+        $('#dtb1').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+              {
+                  extend: 'pdfHtml5',
+                  exportOptions: {
+                      columns: [ 0, 1, 2, 3 ]
+                  }
+              },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0,1,2,3]
+                    }
+                }
+            ]
+        } );
+    } );
     </script>
 
   </body>

@@ -2,7 +2,7 @@
   session_start();
   include "../libs/koneksi.php";
 
-  if(!isset($_SESSION['email'])) { header('Location:login.php');  }
+  if(!isset($_SESSION['email'])) { header('Location:index.php');  }
 
   if(isset($_GET['delete'])){
     $delete = " UPDATE tbl_keranjang SET is_delete = '1' WHERE id = '".$_GET['id_hapus']."' ";
@@ -65,7 +65,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -122,6 +122,7 @@
                         <h5 class="card-title m-0 me-2">Keranjang</h5>
                       </div>
                       <div class="card-body cart-container">
+                        <div class="cart-contimg">
                         <?php
                           $no=1;
                           $total=0;
@@ -137,7 +138,7 @@
                             echo'
                               <ul class="p-0 m-0 cart-body">
                                 <li class="d-flex mb-4 pb-1">
-                                  <div class="avatar flex-shrink-0 me-3">
+                                  <div class="avatar flex-shrink-0 me-3 img-cart">
                                       <img class="card-img card-img-left" src="'.$gambar.'" alt="Card image" />
                                   </div>
                                   <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
@@ -169,7 +170,9 @@
 
                             $no++;
                           }
+                          
                         ?>
+                        </div>
                         <input type="hidden" class="ttl_no" value="<?= $no ?>" >
 
                         <ul class="p-0 m-0 cart-body">

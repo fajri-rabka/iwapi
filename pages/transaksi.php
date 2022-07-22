@@ -28,7 +28,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>IWAPI Pengadaan</title>
+  <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
   <meta name="description" content="" />
 
@@ -143,7 +143,9 @@
                         while($rowT = mysqli_fetch_array($queryT)){
                           echo'
                             <div class="card-body cart-container">
+                            
                               <h6 class="text-muted">Nomor Order #'.$rowT['no_order'].'</h6>
+                              <div class="cart-contimg">
                               ';
                               $query = mysqli_query($conn, "SELECT k.*, b.gambar, b.nm_brng FROM tbl_keranjang k join tbl_barang b on b.id = k.id_brng where k.is_delete < 1 and k.id_user = '".$_SESSION['id_user']."' and k.no_order = '".$rowT['no_order']."' order by k.id asc");
                               while($row = mysqli_fetch_array($query)){
@@ -153,9 +155,10 @@
                                 }
                                 $harga = $row['harga'] * $row['pcs'];
                                 echo'
+                                
                                   <ul class="p-0 m-0 cart-body">
                                     <li class="d-flex mb-4 pb-1">
-                                      <div class="avatar flex-shrink-0 me-3">
+                                      <div class="avatar flex-shrink-0 me-3 img-cart ">
                                         <img class="card-img card-img-left" src="'.$gambar.'"
                                           alt="Card image" />
                                       </div>
@@ -172,7 +175,9 @@
                                   </ul>
                                 ';
                               }
+                              
                               echo'
+                              </div>
                               <a href="#" class="btn btn-primary mt-3 cancelBTN" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#modalCancel"
@@ -204,7 +209,7 @@
                                 echo'
                                   <ul class="p-0 m-0 cart-body">
                                     <li class="d-flex mb-4 pb-1">
-                                      <div class="avatar flex-shrink-0 me-3">
+                                      <div class="avatar flex-shrink-0 me-3 img-cart">
                                         <img class="card-img card-img-left" src="'.$gambar.'"
                                           alt="Card image" />
                                       </div>
@@ -253,7 +258,7 @@
                                 echo'
                                   <ul class="p-0 m-0 cart-body">
                                     <li class="d-flex mb-4 pb-1">
-                                      <div class="avatar flex-shrink-0 me-3">
+                                      <div class="avatar flex-shrink-0 me-3 img-cart">
                                         <img class="card-img card-img-left" src="'.$gambar.'"
                                           alt="Card image" />
                                       </div>
@@ -294,7 +299,7 @@
                                 echo'
                                   <ul class="p-0 m-0 cart-body">
                                     <li class="d-flex mb-4 pb-1">
-                                      <div class="avatar flex-shrink-0 me-3">
+                                      <div class="avatar flex-shrink-0 me-3 img-cart">
                                         <img class="card-img card-img-left" src="'.$gambar.'"
                                           alt="Card image" />
                                       </div>

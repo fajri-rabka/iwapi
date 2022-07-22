@@ -14,6 +14,8 @@
     $cek = mysqli_num_rows($data);
     
     if($cek > 0){
+      $_SESSION['id_user'] = $row['id'];
+      $_SESSION['nm_user'] = $row['nm_user'];
       $_SESSION['email'] = $email;
       $_SESSION['status'] = "login";
       header("location:dashboard.php?log");
@@ -32,7 +34,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -78,7 +80,7 @@
 
               <form id="formAuthentication" class="mb-3" action="" method="POST">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+                  <label for="email" class="form-label">Username</label>
                   <input
                     type="text"
                     class="form-control"

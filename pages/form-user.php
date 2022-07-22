@@ -9,7 +9,8 @@
   if(isset($_POST['finish'])){
     $is_pass='';
     $nm_user = $_POST['nm_user'];
-    $email = $_POST['email'];
+    $email = $_POST['email']; 
+    $alamat = $_POST['alamat'];
     $password = $_POST['password'];
     $level = $_POST['level'];
     $id_user = $_POST['id_user'];
@@ -29,11 +30,13 @@
             INSERT INTO tbl_user(
                 nm_user,
                 email,
+                alamat,
                 password,
                 level
             ) VALUES(
                 '".$nm_user."',
                 '".$email."',
+                '".$alamat."',
                 '".$password."',
                 '".$level."'
             )
@@ -62,6 +65,7 @@
         $update = " UPDATE tbl_user SET 
                                       nm_user = '".$nm_user."',
                                       email = '".$email."',
+                                      alamat = '".$alamat."',
                                       ".$is_pass."
                                       level = '".$level."' 
                                     WHERE id = '".$id_user."' ";
@@ -81,6 +85,7 @@
   $nm_user = '';
   $email = '';
   $password = '';
+  $alamat = '';
   $level = '';
   if(isset($_GET['id'])){
     $query = mysqli_query($conn, "SELECT * FROM tbl_user where id = '".$_GET['id']."' and is_delete < 1 order by id asc");
@@ -88,6 +93,7 @@
       $id = $row['id'];
       $nm_user = $row['nm_user'];
       $email = $row['email'];
+      $alamat = $row['alamat'];
       $password = $row['password'];
       $level = $row['level'];
     }
@@ -109,7 +115,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -175,6 +181,12 @@
                         <div class="input-group input-group-merge">
                             <input type="text" value="<?= $email ?>" name="email" required id="email" class="form-control" placeholder="Email"/>
                             <span class="input-group-text" id="email">@example.com</span>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label" for="basic-default-fullname">Alamat</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" value="<?= $alamat ?>" name="alamat" id="alamat" class="form-control" placeholder="Alamat" required/>
                           </div>
                       </div>
                       <div class="mb-3">

@@ -1,47 +1,29 @@
 <?php
+  session_start();
   include "../libs/koneksi.php";
   
-  if(isset($_POST['nm_user'])){
-    $nm_user = $_POST['nm_user'];
+  if(isset($_POST['email'])){
+    // menangkap data yang dikirim dari form
     $email = $_POST['email'];
-    $alamat = $_POST['alamat'];
-    $password = $_POST['password'];
-    $level = 2;
-
-      // Insert
-      $select_user = " SELECT * FROM tbl_user WHERE email = '".$email."' and is_delete < 1 ";
-      $query_user = mysqli_query($conn, $select_user);
-      $jum_user = mysqli_num_rows($query_user);
-
-      if($jum_user > 0){
-        $valid = 2;
-        header("location:register.php");
-      }else{
-        $password = md5($password);
-        $insert = "
-            INSERT INTO tbl_user(
-                nm_user,
-                email,
-                alamat,
-                password,
-                level
-            ) VALUES(
-                '".$nm_user."',
-                '".$email."',
-                '".$alamat."',
-                '".$password."',
-                '".$level."'
-            )
-        ";
-        $query = mysqli_query($conn,$insert);
-        if(!$query){
-            $valid = 0;
-        }
-
-        header("location:index.php");
+    $password = md5($_POST['password']);
+    
+    // menyeleksi data admin dengan email dan password yang sesuai
+    $data = mysqli_query($conn, "select * from tbl_user where email='$email' and password='$password' and level = '2' and is_delete < 1 ");
+    $row = mysqli_fetch_array($data);
+    
+    // menghitung jumlah data yang ditemukan
+    $cek = mysqli_num_rows($data);
+    
+    if($cek > 0){
+      $_SESSION['id_user'] = $row['id'];
+      $_SESSION['nm_user'] = $row['nm_user'];
+      $_SESSION['email'] = $email;
+      $_SESSION['status'] = "login";
+      header("location:homepage.php");
+    }else{
+      header("location:index.php?pesan=gagal");
     }
   }
-
 ?>
 
 <!DOCTYPE html>
@@ -96,24 +78,13 @@
           <!-- Register -->
           <div class="card">
             <div class="card-body">
-              <h4 class="mb-2">Selamat datang di IWAPI</h4>
-              <p class="mb-4">Silahkan daftarkan akun kamu di IWAPI</p>
+              <h5 class="mb-2">PT Raihan Anugrah Pratama Pengadaan</h4>
+              <p class="mb-4">Silahkan masukan email dan password kamu</p>
 
               <form id="formAuthentication" class="mb-3" action="" method="POST">
                 <div class="mb-3">
-                  <label for="text" class="form-label">Nama User</label>
-                  <input required
-                    type="text"
-                    class="form-control"
-                    id="nm_user"
-                    name="nm_user"
-                    placeholder="Masukan nama kamu disini"
-                    autofocus
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email </label>
-                  <input required
+                  <label for="email" class="form-label">Email</label>
+                  <input
                     type="text"
                     class="form-control"
                     id="email"
@@ -122,23 +93,12 @@
                     autofocus
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="address" class="form-label">Alamat </label>
-                  <input required
-                    type="text"
-                    class="form-control"
-                    id="address"
-                    name="alamat"
-                    placeholder="Masukan alamat kamu disini"
-                    autofocus
-                  />
-                </div>
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">Password</label>
                   </div>
                   <div class="input-group input-group-merge">
-                    <input required
+                    <input
                       type="password"
                       id="password"
                       class="form-control"
@@ -149,14 +109,14 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Register</button>
+                  <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
                 </div>
               </form>
 
               <p class="text-center">
-                <span>Sudah punya akun?</span>
-                <a href="index.php">
-                  <span>Masuk akun anda</span>
+                <span>Tidak punya akun?</span>
+                <a href="register.php">
+                  <span>Daftar akun anda</span>
                 </a>
               </p>
             </div>

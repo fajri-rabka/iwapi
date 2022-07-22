@@ -2,7 +2,7 @@
   session_start();
   include "../libs/koneksi.php";
 
-  if(!isset($_SESSION['email'])) { header('Location:login.php');  }
+  if(!isset($_SESSION['email'])) { header('Location:index.php');  }
 
 ?>
 
@@ -22,7 +22,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 

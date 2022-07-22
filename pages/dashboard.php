@@ -29,7 +29,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>IWAPI Pengadaan</title>
+    <title>PT Raihan Anugrah Pratama Pengadaan</title>
 
     <meta name="description" content="" />
 
@@ -110,7 +110,7 @@
                           <span class="fw-semibold d-block mb-1">Transaksi</span>
                           <h3 class="card-title mb-2">
                             <?php
-                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1 order by id asc");
+                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1  order by id asc");
                               $num_transaksi = mysqli_num_rows($query_transaksi);
                               echo $num_transaksi;
                             ?>

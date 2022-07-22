@@ -72,7 +72,7 @@
                           <span class="flex-grow-1 align-middle">Transaksi</span>
                           <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">
                             <?php
-                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1 order by id asc");
+                              $query_transaksi = mysqli_query($conn, "SELECT * FROM tbl_transaksi where is_delete < 1 and sts <> 'BATAL' order by id asc");
                               $num_transaksi = mysqli_num_rows($query_transaksi);
                               echo $num_transaksi;
                             ?>
