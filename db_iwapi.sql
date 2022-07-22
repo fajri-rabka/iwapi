@@ -1,4 +1,5 @@
 -- phpMyAdmin SQL Dump
+<<<<<<< HEAD
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
@@ -6,6 +7,15 @@
 -- Generation Time: Jul 23, 2022 at 03:43 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
+=======
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 03, 2022 at 08:28 PM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.2.32
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -75,8 +85,12 @@ INSERT INTO `tbl_keranjang` (`id`, `id_user`, `id_brng`, `pcs`, `harga`, `total`
 (3, 2, 1, '120.00', '45000.00', '5400000.00', '1962862168', 0),
 (4, 2, 1, '20.00', '45000.00', '900000.00', '1399145186', 0),
 (5, 2, 4, '30.00', '250000.00', '7500000.00', '1399145186', 0),
+<<<<<<< HEAD
 (6, 2, 2, '20.00', '3000.00', '60000.00', '1399145186', 0),
 (7, 11, 1, '1.00', '45000.00', '45000.00', '1862369278', 0);
+=======
+(6, 2, 2, '20.00', '3000.00', '60000.00', '1399145186', 0);
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 -- --------------------------------------------------------
 
@@ -101,8 +115,12 @@ CREATE TABLE `tbl_transaksi` (
 INSERT INTO `tbl_transaksi` (`id`, `no_order`, `id_user`, `total`, `sts`, `tgl`, `is_delete`) VALUES
 (1, '416557910', 2, '5000000.00', 'DITOLAK', '2022-07-03', 1),
 (2, '1962862168', 2, '5400000.00', 'BATAL', '2022-07-03', 0),
+<<<<<<< HEAD
 (3, '1399145186', 2, '8460000.00', 'BATAL', '2022-07-03', 0),
 (4, '1862369278', 11, '45000.00', 'BERJALAN', '2022-07-23', 0);
+=======
+(3, '1399145186', 2, '8460000.00', 'BATAL', '2022-07-03', 0);
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 -- --------------------------------------------------------
 
@@ -114,7 +132,10 @@ CREATE TABLE `tbl_user` (
   `id` int(11) NOT NULL,
   `nm_user` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+<<<<<<< HEAD
   `alamat` text NOT NULL,
+=======
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
   `password` varchar(255) NOT NULL,
   `level` int(11) NOT NULL,
   `is_delete` int(11) NOT NULL
@@ -124,12 +145,19 @@ CREATE TABLE `tbl_user` (
 -- Dumping data for table `tbl_user`
 --
 
+<<<<<<< HEAD
 INSERT INTO `tbl_user` (`id`, `nm_user`, `email`, `alamat`, `password`, `level`, `is_delete`) VALUES
 (1, 'admin', 'admin', '', '21232f297a57a5a743894a0e4a801fc3', 1, 0),
 (2, 'poltak', 'poltak@mail.com', '', '08a4415e9d594ff960030b921d42b91e', 2, 0),
 (7, 'brilian', 'brilian@mail.com', '', '08a4415e9d594ff960030b921d42b91e', 1, 1),
 (8, 'iwazaki', 'iwazaki@gmail.com', '', '81dc9bdb52d04dc20036dbd8313ed055', 2, 0),
 (11, 'ee', 'ee@gmail.com', 'jl. ee', '08a4415e9d594ff960030b921d42b91e', 2, 0);
+=======
+INSERT INTO `tbl_user` (`id`, `nm_user`, `email`, `password`, `level`, `is_delete`) VALUES
+(1, 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 0),
+(2, 'poltak', 'poltak@mail.com', '08a4415e9d594ff960030b921d42b91e', 2, 0),
+(7, 'brilian', 'brilian@mail.com', '08a4415e9d594ff960030b921d42b91e', 1, 1);
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 --
 -- Indexes for dumped tables
@@ -173,19 +201,31 @@ ALTER TABLE `tbl_barang`
 -- AUTO_INCREMENT for table `tbl_keranjang`
 --
 ALTER TABLE `tbl_keranjang`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 --
 -- AUTO_INCREMENT for table `tbl_transaksi`
 --
 ALTER TABLE `tbl_transaksi`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+>>>>>>> 0c4f6cd0565ab88a4475f523048121a8ec3be4a1
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
